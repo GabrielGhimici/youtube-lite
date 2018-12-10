@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "MSS Project",
   "license": "MIT",
+  "repository": "https://github.com/GabrielGhimici/youtube-lite",
   "scripts": {
     "build-client": "webpack",
     "build-server": "rimraf ./dist/server && tsc -p ./server/tsconfig.json",
@@ -12,17 +13,22 @@
   "dependencies": {
     "@tsed/common": "^4.32.0",
     "@tsed/core": "^4.32.0",
+    "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "compression": "^1.7.3",
     "cookie-parser": "^1.4.3",
     "express": "^4.16.4",
     "method-override": "^3.0.0",
     "mysql": "^2.16.0",
+    "redux": "^4.0.1",
+    "redux-observable": "^1.0.0",
     "reflect-metadata": "^0.1.12",
+    "rxjs": "^6.3.3",
     "typeorm": "^0.2.9"
   },
   "devDependencies": {
     "@babel/core": "^7.1.6",
+    "@babel/plugin-proposal-decorators": "^7.2.0",
     "@babel/preset-typescript": "^7.1.0",
     "@types/express": "^4.16.0",
     "@types/node": "^10.12.11",
