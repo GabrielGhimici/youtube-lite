@@ -1,6 +1,6 @@
 export interface UIComponent {
   readonly id: number;
-  componentHtml: HTMLElement | null;
+  componentHtml: HTMLElement;
   onInit(): void;
   onDestroy(): void;
   init(config?: {[key: string]: any}): void;

@@ -10,7 +10,9 @@ import { ServerLoader, ServerSettings } from '@tsed/common';
   rootDir: Path.resolve(__dirname),
   port: 3000,
   mount: {
-    '/api': '${rootDir}/api/**/*.js'
+    '/api': '${rootDir}/api/**/*.js',
+    '/auth': '${rootDir}/authorization/**/*.js',
+    '/': '${rootDir}/general/**/*.js'
   },
   logger: {
     logRequest: true

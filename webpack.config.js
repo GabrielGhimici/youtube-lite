@@ -4,7 +4,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   mode: 'development',
   entry: {
-    app: './client/index.ts'
+    app: './client/index.ts',
+    styles: './client/styles.scss'
   },
   output: {
     path: path.resolve(__dirname, 'dist', 'client'),
@@ -15,6 +16,20 @@ module.exports = {
     contentBase: path.join(__dirname, 'dist', 'client'),
     compress: true,
     port: 3200,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000',
+        secure: true
+      },
+      '/auth': {
+        target: 'http://localhost:3000',
+        secure: true
+      },
+      '/': {
+        target: 'http://localhost:3000',
+        secure: true
+      }
+    }
   },
   resolve: {
     extensions: ['.ts', '.js', '.json']

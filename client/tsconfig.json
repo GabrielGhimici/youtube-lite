@@ -7,7 +7,6 @@
     "lib": ["es6", "dom"],
     "moduleResolution": "node",
     "importHelpers": true,
-    "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true
   },

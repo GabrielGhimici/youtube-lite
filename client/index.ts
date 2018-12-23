@@ -1,10 +1,12 @@
-import { RootComponent } from './app/root-component';
+import { Router } from './router/router';
 
 function bootStrapApp() {
-  console.log("First app");
-  const app = new RootComponent();
-  app.init();
-  app.render();
+  const router:Router = new Router();
+  const app = router.getAppInstance();
+  if (app !== null) {
+    app.init();
+    app.render();
+  }
 }
 
 bootStrapApp();

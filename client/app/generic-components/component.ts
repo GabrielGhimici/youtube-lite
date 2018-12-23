@@ -2,15 +2,15 @@ import { UIComponent } from './ui-component';
 
 export class Component implements UIComponent {
   readonly id: number;
-  public componentHtml: HTMLElement | null;
+  public componentHtml: HTMLElement;
   protected parent: UIComponent | null;
   protected children: Array<UIComponent>;
 
   constructor() {
     this.id = Date.now();
-    this.componentHtml = null;
+    this.componentHtml = document.createElement('div');
     this.parent = null;
-    this.children = []
+    this.children = [];
   }
 
   public onInit(): void {}
@@ -31,6 +31,9 @@ export class Component implements UIComponent {
     if (this.parent && this.parent.componentHtml && this.componentHtml) {
       this.parent.componentHtml.appendChild(this.componentHtml);
     }
+    this.children.forEach((child: UIComponent) => {
+      child.render();
+    })
   }
   public destroy(): void {
     this.children.forEach((child: UIComponent) => {
@@ -65,6 +68,9 @@ export class Component implements UIComponent {
       console.log('Unable to remove child!', e);
       return false;
     }
+  }
+  public clearChildList() {
+    this.children = [];
   }
   public getChildren(): Array<UIComponent> {
     return this.children;

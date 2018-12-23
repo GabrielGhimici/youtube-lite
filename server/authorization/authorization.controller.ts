@@ -4,7 +4,7 @@ import { AuthorizationService } from './authorization.service';
 
 const crypto = require('crypto');
 
-@Controller('/auth')
+@Controller('')
 export class AuthenticationController {
 
   constructor(

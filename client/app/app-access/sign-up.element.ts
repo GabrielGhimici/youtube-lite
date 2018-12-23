@@ -1,19 +1,15 @@
-import { Component } from './generic-components/component';
+import { Element } from '../generic-components/element';
 
-export class RootComponent extends Component{
+export class SignUpElement extends Element{
   constructor() {
-    super();
+    super()
   }
   onInit(): void {
-    this.parent = new Component();
-    if (this.parent) {
-      this.parent.componentHtml = document.getElementById('root-app');
-    }
     super.onInit();
   }
   render(): void {
     const element = document.createElement('h1');
-    element.innerText = 'This is my first page of youtube lite!';
+    element.innerText = 'This is my sign-up page of youtube lite!';
     element.style.textDecoration = 'underline';
     element.style.fontStyle = 'italic';
     this.componentHtml.appendChild(element);

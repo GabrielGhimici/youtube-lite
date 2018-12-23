@@ -1,6 +1,6 @@
 import { Service } from '@tsed/common';
-import { ConnectionManager } from '../../connection-manager';
-import { User } from '../../api/model/user.model';
+import { ConnectionManager } from '../connection-manager';
+import { User } from '../api/model/user.model';
 
 @Service()
 export class AuthorizationService{
