@@ -1,18 +1,25 @@
 import { Singleton } from '../core/decorators/singleton';
 import { RootComponent } from '../app/root-component';
-import { AccountContainerComponent } from '../app/app-access/account-container.component';
-import { UIComponent } from '../app/generic-components/ui-component';
-import { LoginElement } from '../app/app-access/login.element';
+import { AccountContainerComponent } from '../app/access/account-container.component';
+import { UIComponent } from '../core/generic-components/ui-component';
+import { LoginElement } from '../app/access/login.element';
 import { NotFoundElement } from '../app/not-found.element';
-import { Component } from '../app/generic-components/component';
-import { SignUpElement } from '../app/app-access/sign-up.element';
+import { Component } from '../core/generic-components/component';
+import { SignUpElement } from '../app/access/sign-up.element';
+import { MainPageComponent } from '../app/main/main-page.component';
+import { VideoPageComponent } from '../app/main/video-page/video-page.component';
 
 const RouteConfig = {
   '': {
     component: RootComponent,
     redirectTo: 'app',
     children: {
-      'app': {},
+      'app': {
+        component: MainPageComponent
+      },
+      'video/@id': {
+        component: VideoPageComponent
+      },
       'account': {
         component: AccountContainerComponent,
         redirectTo: 'login',
@@ -47,7 +54,18 @@ export class Router {
     let internalConfig = this.config;
     let traverseComponent: UIComponent;
     for(let i = 0; i < pathChain.length; i++) {
-      internalConfig = internalConfig[pathChain[i]];
+      let partialMatch = [];
+      if (internalConfig) {
+        partialMatch = Object.keys(internalConfig)
+          .filter(el => el.indexOf(pathChain[i]) !== -1 && el.indexOf('@id') !== -1);
+        if (partialMatch.length) {
+          if (pathChain[i + 1] && !isNaN(Number(pathChain[i + 1]))) {
+            pathChain[i] = `${pathChain[i]}/@id`;
+            pathChain.splice(i + 1, 1);
+          }
+        }
+        internalConfig = internalConfig[pathChain[i]];
+      }
       if (internalConfig) {
         if (instance === null) {
           traverseComponent = new internalConfig.component;
@@ -74,7 +92,19 @@ export class Router {
     return instance;
   }
 
-  public redirectTo(path: Array<string>, context) {
-    
+  public redirectTo(path: Array<string>) {
+    const pathName = window.location.pathname;
+    const pathChain = pathName.split('/');
+    if (pathChain[pathChain.length - 1] === '') {
+      pathChain.splice(pathChain.length - 1, 1);
+    }
+    path.forEach((elem) => {
+      if (elem === '..') {
+        pathChain.splice(pathChain.length - 1, 1);
+      } else {
+        pathChain.push(elem);
+      }
+    });
+    window.location.pathname = pathChain.join('/');
   }
 }

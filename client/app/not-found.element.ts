@@ -1,4 +1,4 @@
-import { Element } from './generic-components/element';
+import { Element } from '../core/generic-components/element';
 
 export class NotFoundElement extends Element{
   constructor() {
