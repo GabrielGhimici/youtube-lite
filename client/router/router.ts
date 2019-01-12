@@ -1,11 +1,11 @@
 import { Singleton } from '../core/decorators/singleton';
-import { RootComponent } from '../app/root-component';
-import { AccountContainerComponent } from '../app/access/account-container.component';
+import { RootComponent } from '../app/root-component/root.component';
+import { AccountContainerComponent } from '../app/access/account-container-component/account-container.component';
 import { UIComponent } from '../core/generic-components/ui-component';
-import { LoginElement } from '../app/access/login.element';
-import { NotFoundElement } from '../app/not-found.element';
+import { LoginElement } from '../app/access/login-element/login.element';
+import { NotFoundElement } from '../app/not-found-element/not-found.element';
 import { Component } from '../core/generic-components/component';
-import { SignUpElement } from '../app/access/sign-up.element';
+import { SignUpElement } from '../app/access/sign-up-element/sign-up.element';
 import { MainPageComponent } from '../app/main/main-page.component';
 import { VideoPageComponent } from '../app/main/video-page/video-page.component';
 

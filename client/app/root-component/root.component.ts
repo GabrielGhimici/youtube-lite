@@ -1,18 +1,19 @@
 import { Component } from '../../core/generic-components/component';
+import './root.styles.scss';
 
-export class AccountContainerComponent extends Component {
+export class RootComponent extends Component{
   constructor() {
     super();
   }
   onInit(): void {
+    this.parent = new Component();
+    if (this.parent) {
+      this.parent.componentHtml = document.getElementById('root-app');
+    }
     super.onInit();
   }
   render(): void {
-    const element = document.createElement('h1');
-    element.innerText = 'This is my login container page of youtube lite!';
-    element.style.textDecoration = 'underline';
-    element.style.fontStyle = 'italic';
-    this.componentHtml.appendChild(element);
+    this.componentHtml.className = 'root-app-container';
     super.render();
   }
   destroy(): void {

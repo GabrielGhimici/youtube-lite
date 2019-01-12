@@ -1,0 +1,22 @@
+.login-container {
+  margin: auto;
+  display:flex;
+  flex-direction:column;
+  padding: 24px;
+  min-width: 350px;
+  border-radius: 5px;
+  border: 2px solid var(--primary);
+  .login-header {
+    text-align: center;
+    color: var(--primary);
+    margin-bottom: 24px;
+  }
+  .message-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 24px;
+    >div {
+      margin: auto 16px auto 0;
+    }
+  }
+}

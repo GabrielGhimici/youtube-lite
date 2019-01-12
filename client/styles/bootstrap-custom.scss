@@ -4,5 +4,6 @@ $progress-height: 0.7rem;
 $font-size-base: 0.875rem;
 $progress-font-size: ($font-size-base * .45);
 $font-family-sans-serif: Roboto, Lato, Helvetica, Arial;
+$body-bg: #f6f6f6;
 
 @import "../../node_modules/bootstrap/scss/bootstrap";
