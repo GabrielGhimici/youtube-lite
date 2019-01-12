@@ -15,35 +15,26 @@ export class LoginElement extends Element{
     const loginHeader = document.createElement('h3');
     loginHeader.innerHTML = 'Log in to your account';
     loginHeader.className = 'login-header';
-    const emailGroup = document.createElement('div');
-    emailGroup.className = 'form-group';
-    const emailInput = document.createElement('input');
-    emailInput.setAttribute('id','emailInput');
-    emailInput.setAttribute('type','email');
-    emailInput.setAttribute('placeholder','Email address');
-    emailInput.className = 'form-control';
-    const emailError = document.createElement('div');
-    emailError.setAttribute('id', 'emailError');
-    emailError.innerHTML = 'Email error';
-    emailError.className = 'invalid-feedback';
-    emailGroup.appendChild(emailInput);
-    emailGroup.appendChild(emailError);
-    const passwordGroup = document.createElement('div');
-    passwordGroup.className = 'form-group';
-    const passwordInput = document.createElement('input');
-    passwordInput.setAttribute('id','passwordInput');
-    passwordInput.setAttribute('type','password');
-    passwordInput.setAttribute('placeholder','Password');
-    passwordInput.className = 'form-control';
-    const passwordError = document.createElement('div');
-    passwordError.setAttribute('id', 'passwordError');
-    passwordError.className = 'invalid-feedback';
-    passwordError.innerHTML = 'Password error';
-    passwordGroup.appendChild(passwordInput);
-    passwordGroup.appendChild(passwordError);
+    this.componentHtml.appendChild(loginHeader);
+    [{
+      type: 'email',
+      identifier: 'email',
+      placeholder: 'Enter email',
+      errValue: 'Email error'
+    }, {
+      type: 'password',
+      identifier: 'password',
+      placeholder: 'Enter password',
+      errValue: 'Password error'
+    }].forEach((item: any) => {
+      this.componentHtml.appendChild(
+        this.renderFormControl(item.type, item.identifier, item.placeholder, item.errValue)
+      );
+    });
     const submitButton = document.createElement('button');
     submitButton.innerHTML = 'Log in';
     submitButton.className = 'btn btn-primary';
+    this.componentHtml.appendChild(submitButton);
     const signUp = document.createElement('div');
     signUp.className = 'message-container';
     const signUpMessage = document.createElement('div');
@@ -54,10 +45,6 @@ export class LoginElement extends Element{
     signUpButton.addEventListener('click', this.goToRegister.bind(this));
     signUp.appendChild(signUpMessage);
     signUp.appendChild(signUpButton);
-    this.componentHtml.appendChild(loginHeader);
-    this.componentHtml.appendChild(emailGroup);
-    this.componentHtml.appendChild(passwordGroup);
-    this.componentHtml.appendChild(submitButton);
     this.componentHtml.appendChild(signUp);
     this.componentHtml.className = 'login-container';
     super.render();
@@ -65,6 +52,23 @@ export class LoginElement extends Element{
 
   goToRegister() {
     this.router.redirectTo(['..', 'register']);
+  }
+
+  private renderFormControl(inputType: string, baseIdentifier: string, placeholder: string, errorDefaultValue: string) {
+    const formControl = document.createElement('div');
+    formControl.className = 'form-group';
+    const formInput = document.createElement('input');
+    formInput.setAttribute('id',`${baseIdentifier}Input`);
+    formInput.setAttribute('type',inputType);
+    formInput.setAttribute('placeholder',placeholder);
+    formInput.className = 'form-control';
+    const formError = document.createElement('div');
+    formError.setAttribute('id', `${baseIdentifier}Error`);
+    formError.innerHTML = errorDefaultValue;
+    formError.className = 'invalid-feedback';
+    formControl.appendChild(formInput);
+    formControl.appendChild(formError);
+    return formControl;
   }
 
   destroy(): void {
