@@ -27,9 +27,13 @@ export class Component implements UIComponent {
     });
     this.onInit();
   }
-  public render(): void {
+  public render(customLocation?: string): void {
     if (this.parent && this.parent.componentHtml && this.componentHtml) {
-      this.parent.componentHtml.appendChild(this.componentHtml);
+      if (customLocation && document.getElementById(customLocation)) {
+        document.getElementById(customLocation).appendChild(this.componentHtml);
+      } else {
+        this.parent.componentHtml.appendChild(this.componentHtml);
+      }
     }
     this.children.forEach((child: UIComponent) => {
       child.render();

@@ -22,7 +22,7 @@ export class VideoPageComponent extends Component {
     element.style.textDecoration = 'underline';
     element.style.fontStyle = 'italic';
     this.componentHtml.appendChild(element);
-    super.render();
+    super.render('mainOverflowBody');
   }
   destroy(): void {
     super.destroy();

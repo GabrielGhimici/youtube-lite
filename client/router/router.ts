@@ -6,8 +6,9 @@ import { LoginElement } from '../app/access/login-element/login.element';
 import { NotFoundElement } from '../app/not-found-element/not-found.element';
 import { Component } from '../core/generic-components/component';
 import { SignUpElement } from '../app/access/sign-up-element/sign-up.element';
-import { MainPageComponent } from '../app/main/main-page.component';
+import { MainPageComponent } from '../app/main/main-page-component/main-page.component';
 import { VideoPageComponent } from '../app/main/video-page/video-page.component';
+import { MainContainerComponent } from '../app/main/main-container/main-container.component';
 
 const RouteConfig = {
   '': {
@@ -15,10 +16,16 @@ const RouteConfig = {
     redirectTo: 'app',
     children: {
       'app': {
-        component: MainPageComponent
-      },
-      'video/@id': {
-        component: VideoPageComponent
+        component: MainContainerComponent,
+        redirectTo: 'main',
+        children: {
+          'main' : {
+            component: MainPageComponent
+          },
+          'video/@id': {
+            component: VideoPageComponent
+          }
+        }
       },
       'account': {
         component: AccountContainerComponent,
@@ -77,7 +84,10 @@ export class Router {
           traverseComponent = newComponent;
         }
         if (internalConfig.children) {
-          internalConfig = internalConfig.children
+          if (internalConfig.redirectTo && pathChain.indexOf(internalConfig.redirectTo) < 0 && !pathChain[i + 1]) {
+            this.redirectTo([internalConfig.redirectTo]);
+          }
+          internalConfig = internalConfig.children;
         }
       } else {
         const newComponent = new NotFoundElement();
@@ -86,7 +96,7 @@ export class Router {
         newComponent.setParent(instance);
       }
     }
-    console.log(instance);
+    //console.log(instance);
     console.log(location);
     console.log(pathChain);
     return instance;

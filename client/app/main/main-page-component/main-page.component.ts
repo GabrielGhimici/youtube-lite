@@ -1,4 +1,5 @@
-import { Component } from '../../core/generic-components/component';
+import { Component } from '../../../core/generic-components/component';
+import './main-page.styles.scss';
 
 export class MainPageComponent extends Component {
   constructor() {
@@ -8,12 +9,10 @@ export class MainPageComponent extends Component {
     super.onInit();
   }
   render(): void {
-    const element = document.createElement('h1');
-    element.innerText = 'This is my main page of youtube lite!';
-    element.style.textDecoration = 'underline';
-    element.style.fontStyle = 'italic';
-    this.componentHtml.appendChild(element);
-    super.render();
+    const user = document.createElement('div');
+    user.innerHTML = 'This is main page';
+    this.componentHtml.appendChild(user);
+    super.render('mainOverflowBody');
   }
   destroy(): void {
     super.destroy();
