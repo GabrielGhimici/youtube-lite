@@ -1,4 +1,5 @@
 import { Router } from './router/router';
+import 'bootstrap';
 
 function bootStrapApp() {
   const router:Router = new Router();

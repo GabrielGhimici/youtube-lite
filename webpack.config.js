@@ -1,6 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-
+const webpack = require("webpack");
 module.exports = {
   mode: 'development',
   entry: {
@@ -47,31 +47,34 @@ module.exports = {
         loader: 'source-map-loader'
       },
       {
-        test: /\.(s)?css$/,
+        test: /\.(scss)$/,
         exclude: '/node_modules/',
-        use: [
-          {
-            loader: 'style-loader'
-          },
-          {
-            loader: 'css-loader',
-            options: {
-              sourceMap: true
-            }
-          },
-          {
-            loader: 'sass-loader',
-            options: {
-              sourceMap: true
+        use: [{
+          loader: 'style-loader',
+        }, {
+          loader: 'css-loader',
+        }, {
+          loader: 'postcss-loader',
+          options: {
+            plugins: function () {
+              return [
+                require('autoprefixer')
+              ];
             }
           }
-        ]
-      }
+        }, {
+          loader: 'sass-loader'
+        }]
+      },
     ]
   },
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'client', 'index.html')
+    }),
+    new webpack.ProvidePlugin({
+      $: "jquery",
+      jQuery: "jquery"
     })
   ]
 };

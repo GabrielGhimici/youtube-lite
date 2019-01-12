@@ -17,6 +17,10 @@ export class RootComponent extends Component{
     element.style.textDecoration = 'underline';
     element.style.fontStyle = 'italic';
     this.componentHtml.appendChild(element);
+    const element1 = document.createElement('div');
+    element1.innerText = 'Some alert!';
+    element1.className = 'alert alert-primary';
+    this.componentHtml.appendChild(element1);
     super.render();
   }
   destroy(): void {

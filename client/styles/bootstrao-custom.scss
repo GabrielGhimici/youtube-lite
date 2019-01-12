@@ -1,0 +1,8 @@
+$primary: rgb(1, 127, 194);
+$info: rgb(0, 185, 199);
+$progress-height: 0.7rem;
+$font-size-base: 0.875rem;
+$progress-font-size: ($font-size-base * .45);
+$font-family-sans-serif: Roboto, Lato, Helvetica, Arial;
+
+@import "../../node_modules/bootstrap/scss/bootstrap";
