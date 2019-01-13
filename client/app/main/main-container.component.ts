@@ -1,4 +1,4 @@
-import { Component } from '../../../core/generic-components/component';
+import { Component } from '../../core/generic-components/component';
 import './main-container.styles.scss';
 
 export class MainContainerComponent extends Component {

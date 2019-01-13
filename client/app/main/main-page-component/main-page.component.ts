@@ -1,6 +1,7 @@
 import { Component } from '../../../core/generic-components/component';
 import './main-page.styles.scss';
 import { store } from '../../../index';
+import { PreviewVideoFactory, VideoType } from '../preview-video/preview-video-factory';
 
 export class MainPageComponent extends Component {
   constructor() {
@@ -8,6 +9,12 @@ export class MainPageComponent extends Component {
   }
   onInit(): void {
     super.onInit();
+    this.children.push(PreviewVideoFactory.createVideo(VideoType.Searched));
+    this.children.push(PreviewVideoFactory.createVideo(VideoType.Recommended));
+    this.children.push(PreviewVideoFactory.createVideo(VideoType.GridView));
+    this.children.forEach((item) => {
+      item.setParent(this);
+    })
   }
   render(): void {
     const user = document.createElement('div');

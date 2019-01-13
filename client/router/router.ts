@@ -8,7 +8,7 @@ import { Component } from '../core/generic-components/component';
 import { SignUpElement } from '../app/access/sign-up-element/sign-up.element';
 import { MainPageComponent } from '../app/main/main-page-component/main-page.component';
 import { VideoPageComponent } from '../app/main/video-page/video-page.component';
-import { MainContainerComponent } from '../app/main/main-container/main-container.component';
+import { MainContainerComponent } from '../app/main/main-container.component';
 
 const RouteConfig = {
   '': {
