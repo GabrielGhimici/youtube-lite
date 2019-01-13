@@ -1,5 +1,8 @@
 import { Element } from '../../../core/generic-components/element';
 import './sign-up.styles.scss';
+import { store } from '../../../index';
+import { User } from '../../../core/store/user-management/user/user';
+import { UserActions } from '../../../core/store/user-management/user/user.actions';
 
 export class SignUpElement extends Element{
   constructor() {
@@ -7,13 +10,35 @@ export class SignUpElement extends Element{
   }
   onInit(): void {
     super.onInit();
+    store.subscribe(() => {
+      const currentUserState = store.getState().userManagement.userData;
+      const alert = document.getElementById('signUpAlert');
+      const success = document.getElementById('signUpSuccess');
+      if (currentUserState.saving === false && currentUserState.error) {
+        alert.innerHTML = 'There was a problem on user saving. Please try again!';
+        alert.classList.remove('dismiss');
+      }
+      if (currentUserState.saving === false && !currentUserState.error) {
+        alert.classList.add('dismiss');
+        success.classList.remove('dismiss');
+      }
+    })
   }
   render(): void {
     const loginHeader = document.createElement('h3');
     loginHeader.innerHTML = 'Sign up';
     loginHeader.className = 'sign-up-header';
     this.componentHtml.appendChild(loginHeader);
-
+    const alert = document.createElement('div');
+    alert.setAttribute('id', 'signUpAlert');
+    alert.className = 'alert alert-danger dismiss';
+    alert.innerHTML = '';
+    this.componentHtml.appendChild(alert);
+    const success = document.createElement('div');
+    success.setAttribute('id', 'signUpSuccess');
+    success.className = 'alert alert-success dismiss';
+    success.innerHTML = 'User added successfully. You can login now.';
+    this.componentHtml.appendChild(success);
     [{
       type: 'text',
       identifier: 'firstName',
@@ -27,7 +52,7 @@ export class SignUpElement extends Element{
     }, {
       type: 'text',
       identifier: 'birthDate',
-      placeholder: 'Birth date',
+      placeholder: 'Birth date (mm/dd/yyyy)',
       errValue: 'Birth date error'
     }, {
       identifier: 'gender',
@@ -59,9 +84,49 @@ export class SignUpElement extends Element{
     const submitButton = document.createElement('button');
     submitButton.innerHTML = 'Create account';
     submitButton.className = 'btn btn-primary';
+    submitButton.addEventListener('click', this.submitUser.bind(this));
     this.componentHtml.appendChild(submitButton);
     this.componentHtml.className = 'sign-up-container';
     super.render();
+  }
+
+  submitUser() {
+    const controlValues = [
+      document.getElementById('firstNameInput')['value'],
+      document.getElementById('lastNameInput')['value'],
+      document.getElementById('birthDateInput')['value'],
+      document.getElementById('genderSelect')['value'],
+      document.getElementById('emailInput')['value'],
+      document.getElementById('passwordInput')['value'],
+      document.getElementById('confirmPasswordInput')['value'],
+    ];
+    const alert = document.getElementById('signUpAlert');
+    const dateRegEx = new RegExp(/^((0|1)\d{1})\/((0|1|2)\d{1})\/((19|20)\d{2})/g);
+    const completedValues = controlValues.reduce((accumulator, el) => {
+      accumulator = accumulator && !!el;
+      return accumulator
+    }, true);
+    if (!completedValues) {
+      alert.innerHTML = 'Please provide all details about the user.';
+      alert.classList.remove('dismiss');
+    } else if (controlValues[5] !== controlValues[6]) {
+      alert.innerHTML = 'Passwords doesn\'t match.';
+      alert.classList.remove('dismiss');
+    } else if (!dateRegEx.test(controlValues[2])) {
+      alert.innerHTML = 'Please provide birth date in format mm/dd/yyyy.';
+      alert.classList.remove('dismiss');
+    } else {
+      alert.classList.add('dismiss');
+      const user = new User(
+        -1,
+        controlValues[4],
+        controlValues[0],
+        controlValues[1],
+        controlValues[2],
+        controlValues[3],
+      );
+      store.dispatch(UserActions.saveStart(user, controlValues[5]));
+    }
   }
 
   private renderFormControl(inputType: string, baseIdentifier: string, placeholder: string, errorDefaultValue: string) {

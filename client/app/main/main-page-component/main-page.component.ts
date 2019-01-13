@@ -1,5 +1,6 @@
 import { Component } from '../../../core/generic-components/component';
 import './main-page.styles.scss';
+import { store } from '../../../index';
 
 export class MainPageComponent extends Component {
   constructor() {
@@ -11,6 +12,9 @@ export class MainPageComponent extends Component {
   render(): void {
     const user = document.createElement('div');
     user.innerHTML = 'This is main page';
+    store.subscribe(() => {
+      console.log("STORE BITCH", store.getState());
+    });
     this.componentHtml.appendChild(user);
     super.render('mainOverflowBody');
   }

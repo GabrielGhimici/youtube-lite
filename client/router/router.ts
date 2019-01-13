@@ -104,17 +104,26 @@ export class Router {
 
   public redirectTo(path: Array<string>) {
     const pathName = window.location.pathname;
-    const pathChain = pathName.split('/');
+    let pathChain = pathName.split('/');
     if (pathChain[pathChain.length - 1] === '') {
       pathChain.splice(pathChain.length - 1, 1);
     }
     path.forEach((elem) => {
       if (elem === '..') {
         pathChain.splice(pathChain.length - 1, 1);
+      } else if (elem === '/') {
+        pathChain = [];
       } else {
         pathChain.push(elem);
       }
     });
-    window.location.pathname = pathChain.join('/');
+    if (pathChain.length && pathChain.indexOf('') < 0) {
+      pathChain.unshift('');
+    }
+    const joinedPath = pathChain.join('/');
+    console.log(joinedPath, window.location.pathname);
+    if (window.location.pathname !== joinedPath) {
+      window.location.pathname = joinedPath;
+    }
   }
 }

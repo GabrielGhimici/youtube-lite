@@ -1,6 +1,8 @@
 import { Element } from '../../../core/generic-components/element';
 import { Router } from '../../../router/router';
 import './login.styles.scss';
+import { store } from '../../../index';
+import { AuthorizationActions } from '../../../core/store/user-management/authorization/authorization.actions';
 
 export class LoginElement extends Element{
   private router: Router;
@@ -10,12 +12,28 @@ export class LoginElement extends Element{
   }
   onInit(): void {
     super.onInit();
+    store.subscribe(() => {
+      const currentLoginState = store.getState().userManagement.authorization;
+      const alert = document.getElementById('loginAlert');
+      if (currentLoginState.loading == false && currentLoginState.error) {
+        alert.classList.remove('dismiss');
+      }
+      if (currentLoginState.isLoggedIn) {
+        alert.classList.add('dismiss');
+        this.router.redirectTo(['..', '..', 'app'])
+      }
+    })
   }
   render(): void {
     const loginHeader = document.createElement('h3');
     loginHeader.innerHTML = 'Log in to your account';
     loginHeader.className = 'login-header';
     this.componentHtml.appendChild(loginHeader);
+    const alert = document.createElement('div');
+    alert.setAttribute('id', 'loginAlert');
+    alert.className = 'alert alert-danger dismiss';
+    alert.innerHTML = 'Please check credentials and try again.';
+    this.componentHtml.appendChild(alert);
     [{
       type: 'email',
       identifier: 'email',
@@ -34,6 +52,7 @@ export class LoginElement extends Element{
     const submitButton = document.createElement('button');
     submitButton.innerHTML = 'Log in';
     submitButton.className = 'btn btn-primary';
+    submitButton.addEventListener('click', this.doLogin.bind(this));
     this.componentHtml.appendChild(submitButton);
     const signUp = document.createElement('div');
     signUp.className = 'message-container';
@@ -48,6 +67,23 @@ export class LoginElement extends Element{
     this.componentHtml.appendChild(signUp);
     this.componentHtml.className = 'login-container';
     super.render();
+  }
+
+  doLogin() {
+    const emailValue = document.getElementById('emailInput')['value'];
+    const passwordValue = document.getElementById('passwordInput')['value'];
+    const alert = document.getElementById('loginAlert');
+    if (emailValue && passwordValue) {
+      if (!alert.classList.contains('dismiss')) {
+        alert.classList.add('dismiss');
+      }
+      store.dispatch(AuthorizationActions.loginStart({
+        email: emailValue,
+        password: passwordValue
+      }))
+    } else {
+      alert.classList.remove('dismiss');
+    }
   }
 
   goToRegister() {

@@ -4,7 +4,7 @@ const http = axios.create();
 
 http.interceptors.request.use(function (config) {
   config.withCredentials = true;
-  config.xsrfCookieName = 'YtLite';
+  config.xsrfCookieName = 'YTLite';
   config.xsrfHeaderName = 'Authorization';
   return config;
 });

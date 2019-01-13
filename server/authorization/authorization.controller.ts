@@ -1,4 +1,4 @@
-import { BodyParams, Controller, Post, Request, Required, Response, UseBefore } from '@tsed/common';
+import { BodyParams, Controller, Get, Post, Request, Required, Response, UseBefore } from '@tsed/common';
 import { Unauthorized } from 'ts-httpexceptions';
 import { AuthorizationService } from './authorization.service';
 
@@ -11,30 +11,58 @@ export class AuthenticationController {
     private authorizationService: AuthorizationService
   ) {}
 
+  @Get('/token_info')
+  getTokenInfo(
+    @Request() request,
+    @Response() response,
+  ) {
+    if (request.headers &&
+        request.headers.authorization &&
+        request.session &&
+        request.session.token &&
+        request.session.token === request.headers.authorization) {
+      response.status(200).send({OK: true});
+    } else {
+      response.status(200).send({OK: false});
+    }
+  }
 
-  @Post('/login-element')
+  @Post('/login')
   doLogin(
     @Request() request,
     @Response() response,
-    @Required() @BodyParams('username') username: string,
+    @Required() @BodyParams('email') email: string,
     @Required() @BodyParams('password') password: string,
   ) {
-    return this.authorizationService.checkUser(username, password).then((user) => {
+    return this.authorizationService.checkUser(email, password).then((user) => {
       if (user) {
         request.session.user = user;
         request.session.token = crypto.randomBytes(20).toString('hex');
-        response.cookie('CSToken', request.session.token, request.session.cookie);
-        return 'OK';
+        response.cookie('YTLite', request.session.token, {
+          expires: new Date(Number(new Date())+24*60*60*1000),
+          httpOnly: false
+        });
+        return {
+          OK: true
+        };
       } else {
         throw new Unauthorized('Unauthorized');
       }
     })
   }
+
   @Post('/logout')
   doLogout(
     @Request() request,
     @Response() response,
   ) {
-    return 'OK';
+    request.session.destroy((err) => {
+      if (err) {
+        console.error('session destroy', err);
+        response.status(500).send();
+      } else {
+        response.status(200).send({OK: true});
+      }
+    });
   }
 }
