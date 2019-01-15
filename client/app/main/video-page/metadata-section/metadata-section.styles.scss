@@ -1,0 +1,70 @@
+.metadata-section-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  hr {
+    margin: 16px 0;
+  }
+  .metadata-section-title {
+    width: 450px;
+    font-size: 18px;
+    line-height: 22px;
+    font-weight: 500;
+    display: -webkit-box;
+    max-height: 44px;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    /* autoprefixer: off */
+    -webkit-line-clamp: 2;
+  }
+  .metadata-section-owner-info {
+    display: flex;
+    margin-bottom: 16px;
+    .metadata-section-owner-badge {
+      color: var(--light);
+      background-color: var(--primary);
+      height: 40px;
+      width: 40px;
+      line-height: 40px;
+      font-size: 24px;
+      font-weight: 700;
+      border-radius: 20px;
+      text-align: center;
+      margin: auto 0;
+      text-transform: capitalize;
+      cursor: pointer;
+      user-select: none;
+    }
+    .metadata-section-owner-details {
+      margin-left: 8px;
+      display: flex;
+      flex-direction: column;
+      .metadata-section-owner-details-element {
+        width: 402px;
+        height: 24px;
+        line-height: 24px;
+        user-select: none;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+  .flex-button {
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    .small-icon {
+      font-size: 18px;
+      margin: auto 0 auto 8px;
+    }
+  }
+  .metadata-section-description {
+    height: auto;
+    overflow: auto;
+    text-align: justify;
+  }
+}

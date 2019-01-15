@@ -9,6 +9,7 @@ import { SignUpElement } from '../app/access/sign-up-element/sign-up.element';
 import { MainPageComponent } from '../app/main/main-page-component/main-page.component';
 import { VideoPageComponent } from '../app/main/video-page/video-page.component';
 import { MainContainerComponent } from '../app/main/main-container.component';
+import { SearchPageComponent } from '../app/main/search-page-component/search-page.component';
 
 const RouteConfig = {
   '': {
@@ -24,6 +25,9 @@ const RouteConfig = {
           },
           'video/@id': {
             component: VideoPageComponent
+          },
+          'search': {
+            component: SearchPageComponent
           }
         }
       },

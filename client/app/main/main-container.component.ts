@@ -15,16 +15,30 @@ export class MainContainerComponent extends Component {
     logo.className = 'logo';
     logo.innerHTML = 'Youtube Lite';
     navBar.appendChild(logo);
+    const rightContainer = document.createElement('div');
+    rightContainer.className = 'navbar-right-container';
+    const searchField = document.createElement('input');
+    searchField.setAttribute('id','searchInput');
+    searchField.setAttribute('type','search');
+    searchField.setAttribute('placeholder','Search video');
+    searchField.className = 'form-control spacing-right';
+    rightContainer.appendChild(searchField);
+    const searchButton = document.createElement('button');
+    searchButton.setAttribute('id', 'searchButton');
+    searchButton.className = 'btn btn-outline-light spacing-right-2';
+    searchButton.innerHTML = 'Search';
+    rightContainer.appendChild(searchButton);
     const user = document.createElement('div');
     user.innerHTML = 'Z';
     user.className = 'user-profile-badge';
-    navBar.appendChild(user);
+    rightContainer.appendChild(user);
+    navBar.appendChild(rightContainer);
     this.componentHtml.appendChild(navBar);
     const body = document.createElement('div');
     body.setAttribute('id', 'mainOverflowBody');
     body.className = 'overflow-body';
     this.componentHtml.appendChild(body);
-    this.componentHtml.className = 'main-page-container';
+    this.componentHtml.className = 'main-container';
     super.render();
   }
   destroy(): void {

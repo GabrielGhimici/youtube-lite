@@ -1,0 +1,37 @@
+.comment-container {
+  margin: 16px 0;
+  width: 100%;
+  .comment-info {
+    display: flex;
+    .comment-owner-badge {
+      color: var(--light);
+      background-color: var(--primary);
+      height: 40px;
+      width: 40px;
+      line-height: 40px;
+      font-size: 24px;
+      font-weight: 700;
+      border-radius: 20px;
+      text-align: center;
+      margin: auto 0;
+      text-transform: capitalize;
+      cursor: pointer;
+      user-select: none;
+    }
+    .comment-details {
+      margin-left: 8px;
+      display: flex;
+      flex-direction: column;
+      .comment-owner-details {
+        height: 24px;
+        line-height: 24px;
+        user-select: none;
+        font-weight: bold;
+      }
+      .comment-content {
+        font-size: 16px;
+        line-height: 22px;
+      }
+    }
+  }
+}

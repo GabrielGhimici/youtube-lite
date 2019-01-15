@@ -1,0 +1,16 @@
+.comment-section-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  #commentTextArea {
+    resize: none;
+  }
+  .submit-holder {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .comments-holder {
+    display: flex;
+    flex-direction: column;
+  }
+}

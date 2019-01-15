@@ -1,0 +1,26 @@
+.video-page-container {
+  margin: 24px;
+  .video-section {
+    height: 480px;
+    margin-bottom: 24px;
+    display: flex;
+    .video-render-placeholder {
+      width: calc(100% - 474px);
+    }
+    .metadata-infos {
+      margin-left: 24px;
+      width: 450px;
+    }
+  }
+  .additional-info-section {
+    display: flex;
+    .comments-render-placeholder {
+      width: calc(100% - 474px);
+    }
+    .recommended-videos-placeholder {
+      margin-left: 24px;
+      width: 450px;
+    }
+
+  }
+}

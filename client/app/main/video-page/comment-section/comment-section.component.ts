@@ -1,5 +1,6 @@
 import { Component } from '../../../../core/generic-components/component';
-import { CommentElement } from './comment.element';
+import { CommentElement } from './comment/comment.element';
+import './comment-section.style.scss'
 
 export class CommentSectionComponent extends Component {
   constructor() {
@@ -17,12 +18,31 @@ export class CommentSectionComponent extends Component {
     super.onInit();
   }
   render(): void {
-    const element = document.createElement('h1');
-    element.innerText = 'This is my comment-section of youtube lite!';
-    element.style.textDecoration = 'underline';
-    element.style.fontStyle = 'italic';
-    this.componentHtml.appendChild(element);
-    super.render();
+    const areaHolder = document.createElement('div');
+    areaHolder.className = 'form-group';
+    const areaLabel = document.createElement('label');
+    areaLabel.setAttribute('for', 'commentTextArea');
+    areaLabel.innerHTML = 'Add your comment';
+    areaHolder.appendChild(areaLabel);
+    const area = document.createElement('textarea');
+    area.setAttribute('id', 'commentTextArea');
+    area.setAttribute('rows', '4');
+    area.className = 'form-control';
+    areaHolder.appendChild(area);
+    this.componentHtml.appendChild(areaHolder);
+    const submitButtonHolder = document.createElement('div');
+    submitButtonHolder.className = 'submit-holder';
+    const submitButton = document.createElement('button');
+    submitButton.innerHTML = 'Comment';
+    submitButton.className = 'btn btn-primary';
+    submitButtonHolder.appendChild(submitButton);
+    this.componentHtml.appendChild(submitButtonHolder);
+    const commentsHolder = document.createElement('div');
+    commentsHolder.setAttribute('id', 'commentSectionBody');
+    commentsHolder.className = 'comments-holder';
+    this.componentHtml.appendChild(commentsHolder);
+    this.componentHtml.className = 'comment-section-container';
+    super.render('commentsRenderPlaceholder');
   }
   destroy(): void {
     super.destroy();

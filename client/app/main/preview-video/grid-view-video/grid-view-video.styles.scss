@@ -1,0 +1,35 @@
+.grid-view-video-container {
+  margin: 8px;
+  width: 247px;
+  height: 210px;
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+  cursor: pointer;
+  .grid-view-video-thumbnail {
+    width: 247px;
+    height: 142px;
+  }
+  .grid-view-video-title {
+    width: 247px;
+    font-size: 18px;
+    line-height: 20px;
+    font-weight: 500;
+    display: -webkit-box;
+    max-height: 40px;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    /* autoprefixer: off */
+    -webkit-line-clamp: 2;
+  }
+  .grid-view-video-owner {
+    width: 247px;
+    max-height: 16px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-top: auto;
+  }
+}

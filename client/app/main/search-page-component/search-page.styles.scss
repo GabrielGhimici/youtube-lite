@@ -1,0 +1,13 @@
+.search-page-container {
+  margin: 24px;
+  .search-page-title {
+    font-weight: 600;
+    margin: 0 auto 16px auto;
+    max-width: 850px;
+    min-width: 450px;
+  }
+  .search-page-grid {
+    display: flex;
+    flex-direction: column;
+  }
+}

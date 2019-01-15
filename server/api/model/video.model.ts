@@ -15,11 +15,11 @@ export class Video {
   name: string;
 
   @Column()
-  @MaxLength(100)
+  @MaxLength(500)
   url: string;
 
   @Column({name: 'thumbnail_url'})
-  @MaxLength(100)
+  @MaxLength(500)
   thumbnailUrl: string;
 
   @Column({name: 'owner_id'})

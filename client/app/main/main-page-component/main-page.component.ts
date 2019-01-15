@@ -9,20 +9,30 @@ export class MainPageComponent extends Component {
   }
   onInit(): void {
     super.onInit();
-    this.children.push(PreviewVideoFactory.createVideo(VideoType.Searched));
-    this.children.push(PreviewVideoFactory.createVideo(VideoType.Recommended));
+    this.children.push(PreviewVideoFactory.createVideo(VideoType.GridView));
+    this.children.push(PreviewVideoFactory.createVideo(VideoType.GridView));
+    this.children.push(PreviewVideoFactory.createVideo(VideoType.GridView));
+    this.children.push(PreviewVideoFactory.createVideo(VideoType.GridView));
+    this.children.push(PreviewVideoFactory.createVideo(VideoType.GridView));
+    this.children.push(PreviewVideoFactory.createVideo(VideoType.GridView));
     this.children.push(PreviewVideoFactory.createVideo(VideoType.GridView));
     this.children.forEach((item) => {
       item.setParent(this);
     })
   }
   render(): void {
-    const user = document.createElement('div');
-    user.innerHTML = 'This is main page';
     store.subscribe(() => {
       console.log("STORE BITCH", store.getState());
     });
-    this.componentHtml.appendChild(user);
+    const title = document.createElement('h4');
+    title.innerHTML = 'Recommended videos';
+    title.className = 'main-page-title';
+    this.componentHtml.appendChild(title);
+    const body = document.createElement('div');
+    body.setAttribute('id', 'mainPageGrid')
+    body.className = 'main-page-grid';
+    this.componentHtml.appendChild(body);
+    this.componentHtml.className = 'main-page-container';
     super.render('mainOverflowBody');
   }
   destroy(): void {
