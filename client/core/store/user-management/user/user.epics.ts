@@ -7,7 +7,7 @@ import { from, of } from 'rxjs';
 import { PayloadAction } from '../../payload-action';
 
 export class UserEpics {
-  public createEpics() {
+  public createEpic() {
     return combineEpics(
       this.loadCurrentUser(),
       this.saveUser()

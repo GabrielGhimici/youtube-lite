@@ -7,7 +7,7 @@ import { from, of } from 'rxjs';
 import { UserActions } from '../user/user.actions';
 
 export class AuthorizationEpics {
-  public createEpics() {
+  public createEpic() {
     return combineEpics(
       this.loginEpic(),
       this.logoutEpic()

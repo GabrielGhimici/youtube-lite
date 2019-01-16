@@ -1,6 +1,7 @@
-import { Controller, Get, QueryParams } from '@tsed/common';
+import { Controller, Get, PathParams, QueryParams, Request } from '@tsed/common';
 import { VideoService } from './video.service';
 import { Video } from '../model/video.model';
+import { User } from '../model/user.model';
 
 @Controller('/videos')
 export class VideoController {
@@ -14,5 +15,14 @@ export class VideoController {
     @QueryParams() query: any
   ): Promise<Array<Video>> {
     return this.videoService.getAllVideos(query);
+  }
+
+  @Get('/:id(\\d+)')
+  getVideo(
+    @Request() request,
+    @PathParams("id") id: number,
+    @QueryParams() query: any
+  ): Promise<User> {
+    return this.videoService.getCurrentVideo(id, query);
   }
 }

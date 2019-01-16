@@ -1,7 +1,8 @@
 import { Element } from '../../../../core/generic-components/element';
 import './video-player.styles.scss';
+import { Video } from '../../../../core/store/video-management/video';
 export class VideoPlayerElement extends Element{
-  constructor() {
+  constructor(private data: Video =  new Video()) {
     super()
   }
   onInit(): void {
@@ -10,8 +11,8 @@ export class VideoPlayerElement extends Element{
   render(): void {
     const video = document.createElement('video');
     video.controls = true;
-    video.src = 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4';
-    video.poster = 'https://i.vimeocdn.com/video/749825438.webp?mw=900&mh=507';
+    video.src = this.data.url;
+    video.poster = this.data.thumbnailUrl;
     video.setAttribute('type', 'video/mp4');
     this.componentHtml.appendChild(video);
     this.componentHtml.className = 'video-player-container';

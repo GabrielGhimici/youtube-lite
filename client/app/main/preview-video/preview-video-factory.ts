@@ -9,14 +9,14 @@ export enum VideoType {
 }
 
 export class PreviewVideoFactory {
-  static createVideo(videoType: VideoType) {
+  static createVideo(videoType: VideoType, data: any) {
     switch (videoType) {
       case VideoType.GridView:
-        return new GridViewVideoElement();
+        return new GridViewVideoElement(data);
       case VideoType.Recommended:
-        return new RecommendedVideoElement();
+        return new RecommendedVideoElement(data);
       case VideoType.Searched:
-        return new SearchedVideoElement();
+        return new SearchedVideoElement(data);
       default:
         return null;
     }

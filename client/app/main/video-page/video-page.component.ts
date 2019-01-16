@@ -4,22 +4,43 @@ import { MetadataSectionElement } from './metadata-section/metadata-section.elem
 import { CommentSectionComponent } from './comment-section/comment-section.component';
 import { RecommendedVideoSectionComponent } from './recommended-video-section/recommended-video-section.component';
 import './video-page.styles.scss';
+import { store } from '../../../index';
+import { CurrentVideoActions } from '../../../core/store/video-management/current-video/current-video.actions';
 
 export class VideoPageComponent extends Component {
+  private currentVideo;
   constructor() {
     super();
-    this.children.push(new VideoPlayerElement());
-    this.children.push(new MetadataSectionElement());
-    this.children.push(new CommentSectionComponent());
-    this.children.push(new RecommendedVideoSectionComponent());
-    this.children.forEach((item) => {
-      item.setParent(this);
-    })
+    store.subscribe(() => {
+      if(this.currentVideo !== store.getState().videoManagement.currentVideo) {
+        this.currentVideo = store.getState().videoManagement.currentVideo;
+        if (this.currentVideo.video) {
+          this.children = [
+            new VideoPlayerElement(this.currentVideo.video),
+            new MetadataSectionElement(this.currentVideo.video),
+            new CommentSectionComponent(this.currentVideo.video.comments),
+            new RecommendedVideoSectionComponent()
+          ];
+          this.children.forEach((item) => {
+            item.setParent(this);
+            item.init()
+          });
+          if (document.body.contains(this.componentHtml) && this.componentHtml.parentNode) {
+            this.componentHtml.parentNode.removeChild(this.componentHtml);
+            this.render();
+          }
+        }
+      }
+    });
   }
   onInit(): void {
     super.onInit();
+    const splittedPath = window.location.pathname.split('/');
+    const id = Number(splittedPath[splittedPath.length - 1]);
+    store.dispatch(CurrentVideoActions.loadData(id));
   }
   render(): void {
+    this.componentHtml = document.createElement('div');
     const videoSection = document.createElement('div');
     videoSection.className = 'video-section';
     const videoRenderContainer = document.createElement('div');

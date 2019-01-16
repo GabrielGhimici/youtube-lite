@@ -1,8 +1,10 @@
 import { Element } from '../../../../../core/generic-components/element';
 import './comment.style.scss';
+import { Comment } from '../../../../../core/store/video-management/comment';
+import * as moment from 'moment';
 
 export class CommentElement extends Element{
-  constructor() {
+  constructor(private data: Comment = new Comment()) {
     super()
   }
   onInit(): void {
@@ -12,17 +14,17 @@ export class CommentElement extends Element{
     const userDetails = document.createElement('div');
     userDetails.className = 'comment-info';
     const userBadge = document.createElement('div');
-    userBadge.innerHTML = "S";
+    userBadge.innerHTML = this.data.owner.firstName[0].toUpperCase();
     userBadge.className = 'comment-owner-badge';
     userDetails.appendChild(userBadge);
     const userInfos = document.createElement('div');
     userInfos.className = 'comment-details';
     const userName = document.createElement('div');
-    userName.innerHTML = 'Name - Date';
+    userName.innerHTML = `${this.data.owner.firstName} ${this.data.owner.lastName} - ${this.data.creationDate ? moment(this.data.creationDate).format('DD MMM YYYY') : ''}`;
     userName.className = 'comment-owner-details';
     userInfos.appendChild(userName);
     const uploadDate = document.createElement('div');
-    uploadDate.innerHTML = 'Date';
+    uploadDate.innerHTML = this.data.content;
     uploadDate.className = 'comment-content';
     userInfos.appendChild(uploadDate);
     userDetails.appendChild(userInfos);

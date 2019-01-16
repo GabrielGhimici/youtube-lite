@@ -23,7 +23,7 @@ export class Comment {
 
   @Column({name: 'created_date'})
   @Property()
-  creationData: Date;
+  creationDate: Date;
 
   @Column()
   @Property()

@@ -2,6 +2,7 @@ import { Component } from '../../../core/generic-components/component';
 import './main-page.styles.scss';
 import { store } from '../../../index';
 import { PreviewVideoFactory, VideoType } from '../preview-video/preview-video-factory';
+import { Video } from '../../../core/store/video-management/video';
 
 export class MainPageComponent extends Component {
   constructor() {
@@ -9,21 +10,23 @@ export class MainPageComponent extends Component {
   }
   onInit(): void {
     super.onInit();
-    this.children.push(PreviewVideoFactory.createVideo(VideoType.GridView));
-    this.children.push(PreviewVideoFactory.createVideo(VideoType.GridView));
-    this.children.push(PreviewVideoFactory.createVideo(VideoType.GridView));
-    this.children.push(PreviewVideoFactory.createVideo(VideoType.GridView));
-    this.children.push(PreviewVideoFactory.createVideo(VideoType.GridView));
-    this.children.push(PreviewVideoFactory.createVideo(VideoType.GridView));
-    this.children.push(PreviewVideoFactory.createVideo(VideoType.GridView));
-    this.children.forEach((item) => {
-      item.setParent(this);
-    })
+    store.subscribe(() => {
+      const mainVideos = store.getState().videoManagement.mainVideos.items;
+      this.children = [];
+      mainVideos.forEach((video: Video) => {
+        this.children.push(PreviewVideoFactory.createVideo(VideoType.GridView, video));
+      });
+      this.children.forEach((item) => {
+        item.setParent(this);
+      });
+      if (document.body.contains(this.componentHtml) && this.componentHtml.parentNode) {
+        this.componentHtml.parentNode.removeChild(this.componentHtml);
+        this.render();
+      }
+    });
   }
   render(): void {
-    store.subscribe(() => {
-      console.log("STORE BITCH", store.getState());
-    });
+    this.componentHtml = document.createElement('div');
     const title = document.createElement('h4');
     title.innerHTML = 'Recommended videos';
     title.className = 'main-page-title';

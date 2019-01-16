@@ -1,12 +1,20 @@
 import { Component } from '../../core/generic-components/component';
 import './main-container.styles.scss';
+import { store } from '../../index';
+import { VideoListActions } from '../../core/store/video-management/video-list/video-list.actions';
+import { ListType } from '../../core/store/video-management/video-management.reducer';
+import { Router } from '../../router/router';
 
 export class MainContainerComponent extends Component {
+  private router: Router;
   constructor() {
     super();
+    this.router = new Router();
   }
   onInit(): void {
     super.onInit();
+    store.dispatch(VideoListActions.loadData(ListType.Main));
+    store.dispatch(VideoListActions.loadData(ListType.Filtered, {q: ''}));
   }
   render(): void {
     const navBar = document.createElement('nav');
@@ -25,6 +33,7 @@ export class MainContainerComponent extends Component {
     rightContainer.appendChild(searchField);
     const searchButton = document.createElement('button');
     searchButton.setAttribute('id', 'searchButton');
+    searchButton.addEventListener('click', this.goToSearch.bind(this));
     searchButton.className = 'btn btn-outline-light spacing-right-2';
     searchButton.innerHTML = 'Search';
     rightContainer.appendChild(searchButton);
@@ -40,6 +49,11 @@ export class MainContainerComponent extends Component {
     this.componentHtml.appendChild(body);
     this.componentHtml.className = 'main-container';
     super.render();
+  }
+  goToSearch() {
+    const searchValue = document.getElementById('searchInput')['value'];
+    store.dispatch(VideoListActions.loadData(ListType.Filtered, {q: searchValue}));
+    this.router.redirectTo(['/', 'app', 'search'])
   }
   destroy(): void {
     super.destroy();

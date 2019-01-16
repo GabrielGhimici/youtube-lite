@@ -1,15 +1,14 @@
 import { Component } from '../../../../core/generic-components/component';
 import { CommentElement } from './comment/comment.element';
 import './comment-section.style.scss'
+import { Comment } from '../../../../core/store/video-management/comment';
 
 export class CommentSectionComponent extends Component {
-  constructor() {
+  constructor(private data: Array<Comment> = []) {
     super();
-    let i = 0;
-    while (i < 5) {
-      this.children.push(new CommentElement());
-      i++;
-    }
+    this.data.forEach(elem => {
+      this.children.push(new CommentElement(elem))
+    });
     this.children.forEach((item) => {
       item.setParent(this);
     })

@@ -4,8 +4,8 @@ import { AuthorizationEpics } from './authorization/authorization.epics';
 export class UserManagementEpics {
   static createEpics() {
     return [
-      new UserEpics().createEpics(),
-      new AuthorizationEpics().createEpics()
+      new UserEpics().createEpic(),
+      new AuthorizationEpics().createEpic()
     ];
   }
 }
