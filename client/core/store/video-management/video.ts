@@ -63,7 +63,7 @@ export class Video {
     return this._metadata;
   }
   public addComment(comment: Comment) {
-    this._comments.push(comment);
+    this._comments.unshift(comment);
   }
   public get comments(): Array<Comment> {
     return this._comments;

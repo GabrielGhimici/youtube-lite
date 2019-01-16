@@ -22,7 +22,8 @@ export class RootComponent extends Component{
       if (req.data && req.data.OK) {
         store.dispatch(AuthorizationActions.loginSucceeded());
         store.dispatch(UserActions.loadProfile());
-        this.router.redirectTo(['/','app', 'main']);
+      } else {
+        this.router.redirectTo(['/','account', 'login']);
       }
     });
     super.onInit();

@@ -2,6 +2,8 @@ import { Element } from '../../../../core/generic-components/element';
 import './metadata-section.styles.scss'
 import { Video } from '../../../../core/store/video-management/video';
 import * as moment from 'moment';
+import { store } from '../../../../index';
+import { CurrentVideoActions } from '../../../../core/store/video-management/current-video/current-video.actions';
 
 export class MetadataSectionElement extends Element{
   constructor(private data: Video = new Video()) {
@@ -39,10 +41,12 @@ export class MetadataSectionElement extends Element{
     userActions.className = 'btn-group';
     const likeButton = document.createElement('button');
     likeButton.innerHTML = `${this.data.metadata.likes} <i class="material-icons small-icon">thumb_up</i>`;
+    likeButton.addEventListener('click', this.doLike.bind(this));
     likeButton.className = 'btn btn-primary flex-button';
     userActions.appendChild(likeButton);
     const dislikeButton = document.createElement('button');
     dislikeButton.innerHTML = `${this.data.metadata.dislikes} <i class="material-icons small-icon">thumb_down</i>`;
+    dislikeButton.addEventListener('click', this.doDislike.bind(this));
     dislikeButton.className = 'btn btn-primary flex-button';
     userActions.appendChild(dislikeButton);
     const shareButton = document.createElement('button');
@@ -63,6 +67,12 @@ export class MetadataSectionElement extends Element{
     this.componentHtml.appendChild(description);
     this.componentHtml.className = 'metadata-section-container';
     super.render('metadataInfos');
+  }
+  doLike() {
+    store.dispatch(CurrentVideoActions.likeStart(this.data.metadata.id));
+  }
+  doDislike() {
+    store.dispatch(CurrentVideoActions.dislikeStart(this.data.metadata.id));
   }
   destroy(): void {
     super.destroy();

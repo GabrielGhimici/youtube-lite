@@ -23,4 +23,21 @@ export class MetadataService {
     })
   }
 
+  doLike(id: number) {
+    return this.conManager.connection.then((connection) => {
+      return connection.getRepository(Metadata).findOne(id).then(data => {
+        data.likes = data.likes + 1;
+        return connection.getRepository(Metadata).save(data);
+      })
+    })
+  }
+
+  doDislike(id: number) {
+    return this.conManager.connection.then((connection) => {
+      return connection.getRepository(Metadata).findOne(id).then(data => {
+        data.dislikes = data.dislikes + 1;
+        return connection.getRepository(Metadata).save(data);
+      })
+    })
+  }
 }

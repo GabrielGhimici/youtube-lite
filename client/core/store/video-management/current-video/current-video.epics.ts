@@ -12,7 +12,10 @@ import { CurrentVideoActions, CurrentVideoActionTypes } from './current-video.ac
 export class CurrentVideoEpics {
   public createEpic() {
     return combineEpics(
-      this.loadVideo()
+      this.loadVideo(),
+      this.doLike(),
+      this.doDislike(),
+      this.addComment()
     )
   }
   private loadVideo() {
@@ -66,6 +69,76 @@ export class CurrentVideoEpics {
             return  CurrentVideoActions.loadSucceeded(video);
           }),
           catchError(err => of(CurrentVideoActions.loadFailed(err)))
+        )
+      })
+    )
+  }
+
+  private doLike() {
+    return action$ => action$.pipe(
+      ofType(CurrentVideoActionTypes.LikeStart),
+      switchMap((action: PayloadAction) => {
+        return from(http.post(`/api/metadata/${action.payload.id}/like`)).pipe(
+          switchMap((req: any) => {
+            return of(req.data);
+          }),
+          map((element: any) => {
+            return  CurrentVideoActions.likeSucceeded(element.likes);
+          }),
+          catchError(err => of(CurrentVideoActions.likeFailed(err)))
+        )
+      })
+    )
+  }
+
+  private doDislike() {
+    return action$ => action$.pipe(
+      ofType(CurrentVideoActionTypes.DislikeStart),
+      switchMap((action: PayloadAction) => {
+        return from(http.post(`/api/metadata/${action.payload.id}/dislike`)).pipe(
+          switchMap((req: any) => {
+            return of(req.data);
+          }),
+          map((element: any) => {
+            return  CurrentVideoActions.dislikeSucceeded(element.dislikes);
+          }),
+          catchError(err => of(CurrentVideoActions.dislikeFailed(err)))
+        )
+      })
+    )
+  }
+
+  private addComment() {
+    return (action$, store) => action$.pipe(
+      ofType(CurrentVideoActionTypes.AddCommentStart),
+      switchMap((action: PayloadAction) => {
+        const payload = {
+          linkedVideoId: action.payload.videoId,
+          ownerId: store.value.userManagement.userData.user ? store.value.userManagement.userData.user.id : null,
+          content: action.payload.content,
+          status: 1
+        };
+        return from(http.post(`/api/comments/`, payload, {params: {include: 'owner'}})).pipe(
+          switchMap((req: any) => {
+            return of(req.data);
+          }),
+          map((comment: any) => {
+            const officialComment = new Comment();
+            officialComment.id = comment.id;
+            officialComment.ownerId = comment.ownerId;
+            const commentOwner = new User();
+            commentOwner.id = comment.owner.id;
+            commentOwner.firstName = comment.owner.firstName;
+            commentOwner.lastName = comment.owner.lastName;
+            commentOwner.email = comment.owner.email;
+            commentOwner.gender = comment.owner.gender;
+            commentOwner.birthDate = comment.owner.birthDate;
+            officialComment.owner = commentOwner;
+            officialComment.content = comment.content;
+            officialComment.creationDate = comment.creationDate;
+            return  CurrentVideoActions.addCommentSucceeded(comment);
+          }),
+          catchError(err => of(CurrentVideoActions.addCommentFailed(err)))
         )
       })
     )

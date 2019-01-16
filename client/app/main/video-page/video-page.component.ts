@@ -18,7 +18,7 @@ export class VideoPageComponent extends Component {
           this.children = [
             new VideoPlayerElement(this.currentVideo.video),
             new MetadataSectionElement(this.currentVideo.video),
-            new CommentSectionComponent(this.currentVideo.video.comments),
+            new CommentSectionComponent(this.currentVideo.video.comments, this.currentVideo.video.id),
             new RecommendedVideoSectionComponent()
           ];
           this.children.forEach((item) => {
