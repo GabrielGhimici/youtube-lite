@@ -1,6 +1,7 @@
-import { Controller, Get, PathParams, Post, QueryParams, Request } from '@tsed/common';
+import { BodyParams, Controller, Get, PathParams, Post, QueryParams, Request, Required, Response } from '@tsed/common';
 import { MetadataService } from './metadata.service';
 import { Metadata } from '../model/metadata.model';
+import { Video } from '../model/video.model';
 
 @Controller('/metadata')
 export class MetadataController {
@@ -14,6 +15,15 @@ export class MetadataController {
     @QueryParams() query: any
   ): Promise<Array<Metadata>> {
     return this.metadataService.getAllMetadataElements(query);
+  }
+
+  @Post('')
+  saveMetadata(
+    @Request() request,
+    @Response() response,
+    @Required() @BodyParams() meta: Metadata
+  ){
+    return this.metadataService.saveMeta(meta);
   }
 
   @Post('/:id(\\d+)/like')

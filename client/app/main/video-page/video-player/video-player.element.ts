@@ -9,6 +9,8 @@ export class VideoPlayerElement extends Element{
     super.onInit();
   }
   render(): void {
+    this.componentHtml.remove();
+    this.componentHtml = document.createElement('div');
     const video = document.createElement('video');
     video.controls = true;
     video.src = this.data.url;

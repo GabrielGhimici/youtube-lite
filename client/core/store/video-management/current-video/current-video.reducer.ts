@@ -24,12 +24,30 @@ export function currentVideoReducer(state: CurrentVideoState = INITIAL_STATE, ac
         }
       }
     }
+    case CurrentVideoActionTypes.SaveStart: {
+      return {
+        ...state,
+        ...{
+          saving: true,
+          error: null
+        }
+      }
+    }
     case CurrentVideoActionTypes.LoadSucceeded: {
       return {
         ...state,
         ...{
           loading: false,
           video: action.payload,
+          error: null
+        }
+      }
+    }
+    case CurrentVideoActionTypes.SaveSucceeded: {
+      return {
+        ...state,
+        ...{
+          saving: false,
           error: null
         }
       }
@@ -72,6 +90,15 @@ export function currentVideoReducer(state: CurrentVideoState = INITIAL_STATE, ac
         ...state,
         ...{
           loading: false,
+          error: action.error
+        }
+      }
+    }
+    case CurrentVideoActionTypes.SaveFailed: {
+      return {
+        ...state,
+        ...{
+          saving: false,
           error: action.error
         }
       }

@@ -5,23 +5,26 @@ import { PreviewVideoFactory, VideoType } from '../preview-video/preview-video-f
 import { Video } from '../../../core/store/video-management/video';
 
 export class MainPageComponent extends Component {
+  private mainVideos: any;
   constructor() {
     super();
   }
   onInit(): void {
     super.onInit();
     store.subscribe(() => {
-      const mainVideos = store.getState().videoManagement.mainVideos.items;
-      this.children = [];
-      mainVideos.forEach((video: Video) => {
-        this.children.push(PreviewVideoFactory.createVideo(VideoType.GridView, video));
-      });
-      this.children.forEach((item) => {
-        item.setParent(this);
-      });
-      if (document.body.contains(this.componentHtml) && this.componentHtml.parentNode) {
-        this.componentHtml.parentNode.removeChild(this.componentHtml);
-        this.render();
+      if (this.mainVideos !== store.getState().videoManagement.mainVideos.items) {
+        const mainVideos = store.getState().videoManagement.mainVideos.items;
+        this.children = [];
+        mainVideos.forEach((video: Video) => {
+          this.children.push(PreviewVideoFactory.createVideo(VideoType.GridView, video));
+        });
+        this.children.forEach((item) => {
+          item.setParent(this);
+        });
+        if (document.body.contains(this.componentHtml) && this.componentHtml.parentNode) {
+          this.componentHtml.parentNode.removeChild(this.componentHtml);
+          this.render();
+        }
       }
     });
   }

@@ -4,6 +4,9 @@ export enum CurrentVideoActionTypes {
   LoadStart = '[CURRENT_VIDEO]LOAD_START',
   LoadSucceeded = '[CURRENT_VIDEO]LOAD_SUCCEEDED',
   LoadFailed = '[CURRENT_VIDEO]LOAD_FAILED',
+  SaveStart = '[CURRENT_VIDEO]SAVE_START',
+  SaveSucceeded = '[CURRENT_VIDEO]SAVE_SUCCEEDED',
+  SaveFailed = '[CURRENT_VIDEO]SAVE_FAILED',
   LikeStart = '[CURRENT_VIDEO]LIKE_START',
   LikeSucceeded = '[CURRENT_VIDEO]LIKE_SUCCEEDED',
   LikeFailed = '[CURRENT_VIDEO]LIKE_FAILED',
@@ -35,6 +38,26 @@ export class CurrentVideoActions {
   static loadFailed(error: any): PayloadAction {
     return {
       type: CurrentVideoActionTypes.LoadFailed,
+      error,
+    };
+  }
+
+  static saveData(data: any): PayloadAction {
+    return {
+      type: CurrentVideoActionTypes.SaveStart,
+      payload: data
+    };
+  }
+
+  static saveSucceeded(): PayloadAction {
+    return {
+      type: CurrentVideoActionTypes.SaveSucceeded
+    };
+  }
+
+  static saveFailed(error: any): PayloadAction {
+    return {
+      type: CurrentVideoActionTypes.SaveFailed,
       error,
     };
   }

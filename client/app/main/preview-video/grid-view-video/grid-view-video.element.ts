@@ -13,6 +13,7 @@ export class GridViewVideoElement extends Element{
     super.onInit();
   }
   render(): void {
+    this.componentHtml = document.createElement('div');
     const thumbnail = document.createElement('img');
     thumbnail.setAttribute('src', this.data.thumbnailUrl);
     thumbnail.className = 'grid-view-video-thumbnail';

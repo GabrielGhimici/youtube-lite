@@ -10,6 +10,7 @@ import { MainPageComponent } from '../app/main/main-page-component/main-page.com
 import { VideoPageComponent } from '../app/main/video-page/video-page.component';
 import { MainContainerComponent } from '../app/main/main-container.component';
 import { SearchPageComponent } from '../app/main/search-page-component/search-page.component';
+import { AddVideoElement } from '../app/main/add-video-elemet/add-video.element';
 
 const RouteConfig = {
   '': {
@@ -25,6 +26,9 @@ const RouteConfig = {
           },
           'video/@id': {
             component: VideoPageComponent
+          },
+          'add-video': {
+            component: AddVideoElement
           },
           'search': {
             component: SearchPageComponent

@@ -32,6 +32,12 @@ export class MetadataService {
     })
   }
 
+  saveMeta(meta: Metadata) {
+    return this.conManager.connection.then((connection) => {
+      return connection.getRepository(Metadata).save(meta);
+    })
+  }
+
   doDislike(id: number) {
     return this.conManager.connection.then((connection) => {
       return connection.getRepository(Metadata).findOne(id).then(data => {

@@ -19,6 +19,8 @@ export class CommentSectionComponent extends Component {
     super.onInit();
   }
   render(): void {
+    this.componentHtml.remove();
+    this.componentHtml = document.createElement('div');
     const areaHolder = document.createElement('div');
     areaHolder.className = 'form-group';
     const areaLabel = document.createElement('label');

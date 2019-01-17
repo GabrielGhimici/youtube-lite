@@ -13,6 +13,8 @@ export class MetadataSectionElement extends Element{
     super.onInit();
   }
   render(): void {
+    this.componentHtml.remove();
+    this.componentHtml = document.createElement('div');
     const title = document.createElement('div');
     title.setAttribute('title', this.data.name);
     title.innerHTML = this.data.name;

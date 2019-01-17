@@ -3,6 +3,7 @@ import { ConnectionManager } from '../../connection-manager';
 import { Video } from '../model/video.model';
 import { Like } from 'typeorm';
 import { User } from '../model/user.model';
+import { Metadata } from '../model/metadata.model';
 
 @Service()
 export class VideoService {
@@ -43,4 +44,9 @@ export class VideoService {
     })
   }
 
+  saveVideo(video) {
+    return this.conManager.connection.then((connection) => {
+      return connection.getRepository(Video).save(video);
+    })
+  }
 }

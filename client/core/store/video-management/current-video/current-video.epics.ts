@@ -1,7 +1,7 @@
 import { combineEpics, ofType } from 'redux-observable';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { PayloadAction } from '../../payload-action';
-import { from, of } from 'rxjs';
+import { forkJoin, from, of } from 'rxjs';
 import http from '../../../http';
 import { Video } from '../video';
 import { User } from '../../user-management/user/user';
@@ -15,7 +15,8 @@ export class CurrentVideoEpics {
       this.loadVideo(),
       this.doLike(),
       this.doDislike(),
-      this.addComment()
+      this.addComment(),
+      this.saveVideo()
     )
   }
   private loadVideo() {
@@ -139,6 +140,55 @@ export class CurrentVideoEpics {
             return  CurrentVideoActions.addCommentSucceeded(comment);
           }),
           catchError(err => of(CurrentVideoActions.addCommentFailed(err)))
+        )
+      })
+    )
+  }
+
+  saveVideo() {
+    return (action$, store) => action$.pipe(
+      ofType(CurrentVideoActionTypes.SaveStart),
+      switchMap((action: PayloadAction) => {
+        const metadataPayload = {
+          description: action.payload.description,
+          likes: 0,
+          dislikes: 0,
+          shares: 0,
+          status: 1,
+        };
+        return from(http.post(`/api/metadata/`, metadataPayload)).pipe(
+          switchMap((req: any) => {
+            const videoPayload = {
+              name: action.payload.name,
+              ownerId: store.value.userManagement.userData.user ? store.value.userManagement.userData.user.id : null,
+              metadataId: req.data.id,
+              status: 1
+            };
+            return from(http.post(`/api/videos/`, videoPayload)).pipe(
+              switchMap((vidReq: any) => {
+                const videoFormData = new FormData();
+                const thumbnailFormData = new FormData();
+                const unique = (new Date()).getTime();
+                console.log(vidReq.data.id)
+                videoFormData.append('filename', unique + '/' + action.payload.videoFile.name);
+                videoFormData.append('mimetype', action.payload.videoFile.type);
+                videoFormData.append('destination',
+                  (store.value.userManagement.userData.user ? store.value.userManagement.userData.user.id : unique) + '/' + vidReq.data.id + '/');
+                videoFormData.append('file', action.payload.videoFile);
+                thumbnailFormData.append('filename', unique + '/' + action.payload.thumbnailFile.name);
+                thumbnailFormData.append('mimetype', action.payload.videoFile.type);
+                thumbnailFormData.append('destination',
+                  (store.value.userManagement.userData.user ? store.value.userManagement.userData.user.id : unique) + '/' + vidReq.data.id + '/');
+                thumbnailFormData.append('file', action.payload.thumbnailFile);
+                return forkJoin([
+                  from(http.post(`/api/videos/videoFile`, videoFormData)),
+                  from(http.post(`/api/videos/thumbnailFile`, thumbnailFormData))
+                ])
+              })
+            )
+          }),
+          map((_) => CurrentVideoActions.saveSucceeded()),
+          catchError((err) => of(CurrentVideoActions.saveFailed(err)))
         )
       })
     )
